@@ -88,7 +88,7 @@ func EmbedIcon(c *coff.File, icon *FileResource) error {
 		return errors.Wrap(err, "failed to decode icon file")
 	}
 	for i, img := range icons.Images {
-		img.ID = findPossibleID(r, 1000)
+		img.ID = findPossibleID(r, 1)
 		if err := r.AddResourceByID(rsrc.IconResource, img.ID, img); err != nil {
 			return errors.Wrapf(err, "failed to add icon image #%d", i)
 		}
