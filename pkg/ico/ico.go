@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"encoding/binary"
 	"io"
-	"io/ioutil"
 
-	"github.com/wuc656/syso/pkg/common"
 	"github.com/pkg/errors"
+	"github.com/wuc656/syso/pkg/common"
 )
 
 // Image represents a single icon image.
@@ -94,7 +93,7 @@ func DecodeAll(r Reader) (*Group, error) {
 			return nil, errors.Wrapf(err, "failed to read icon directory entry #%d", i)
 		}
 		entries = append(entries, &e)
-		data, err := ioutil.ReadAll(io.NewSectionReader(r, int64(e.ImageOffset), int64(e.BytesInRes)))
+		data, err := io.ReadAll(io.NewSectionReader(r, int64(e.ImageOffset), int64(e.BytesInRes)))
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to read icon image #%d's data", i)
 		}

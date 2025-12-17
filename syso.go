@@ -5,11 +5,11 @@ import (
 	"io"
 	"os"
 
+	"github.com/pkg/errors"
 	"github.com/wuc656/syso/pkg/coff"
 	"github.com/wuc656/syso/pkg/common"
 	"github.com/wuc656/syso/pkg/ico"
 	"github.com/wuc656/syso/pkg/rsrc"
-	"github.com/pkg/errors"
 )
 
 // FileResource represents a file resource that can be found at Path.
@@ -29,9 +29,9 @@ func (r *FileResource) Validate() error {
 		return errors.New("id and name cannot be set together")
 	} else if r.ID < 0 {
 		return errors.Errorf("invalid id: %d", r.ID)
-	} else if r.Path == "" {
+	} /*  else if r.Path == "" {
 		return errors.New("path should be set")
-	}
+	} */
 	return nil
 }
 

@@ -10,7 +10,7 @@ import (
 	"github.com/wuc656/syso/pkg/coff"
 )
 
-const version = "v0.0.3"
+const version = "v0.0.4"
 
 var (
 	configFile string
