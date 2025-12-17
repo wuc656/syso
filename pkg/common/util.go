@@ -41,7 +41,7 @@ func FormatVersionString(v uint64) string {
 func ParseVersionString(s string) (uint64, error) {
 	r := regexp.MustCompile(`^(\d+)\.(\d+)\.(\d+)\.(\d+)$`).FindStringSubmatch(s)
 	if len(r) == 0 {
-		return 0, errors.Errorf("invalid version string format; %q", s)
+		return 0, fmt.Errorf("invalid version string format; %q", s)
 	}
 	var v uint64
 	for _, c := range r[1:] {

@@ -2,14 +2,15 @@ package syso
 
 import (
 	"bytes"
+	"fmt"
 	"reflect"
 	"strconv"
 
+	"github.com/pkg/errors"
 	"github.com/wuc656/syso/pkg/coff"
 	"github.com/wuc656/syso/pkg/common"
 	"github.com/wuc656/syso/pkg/rsrc"
 	"github.com/wuc656/syso/pkg/versioninfo"
-	"github.com/pkg/errors"
 )
 
 // VersionInfoResource represents a version info resource.
@@ -28,7 +29,7 @@ func (r *VersionInfoResource) Validate() error {
 	} else if r.ID != nil && r.Name != nil {
 		return errors.New("resource id and name cannot be given at same time")
 	} else if r.ID != nil && *r.ID < 1 {
-		return errors.Errorf("invalid resource id; %d", *r.ID)
+		return fmt.Errorf("invalid resource id; %d", *r.ID)
 	} else if r.Name != nil && *r.Name == "" {
 		return errors.New("resource name cannot be empty")
 	}

@@ -2,6 +2,7 @@ package syso
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 
@@ -28,7 +29,7 @@ func (r *FileResource) Validate() error {
 	} else if r.ID != 0 && r.Name != "" {
 		return errors.New("id and name cannot be set together")
 	} else if r.ID < 0 {
-		return errors.Errorf("invalid id: %d", r.ID)
+		return fmt.Errorf("invalid id: %d", r.ID)
 	} /*  else if r.Path == "" {
 		return errors.New("path should be set")
 	} */
@@ -54,9 +55,9 @@ func ParseConfig(r io.Reader) (*Config, error) {
 		}
 		for j, icon2 := range c.Icons[:i] {
 			if icon.ID != 0 && icon2.ID != 0 && icon2.ID == icon.ID {
-				return nil, errors.Errorf("icon #%d's id and icon #%d's id are same", i, j)
+				return nil, fmt.Errorf("icon #%d's id and icon #%d's id are same", i, j)
 			} else if icon.Name != "" && icon2.Name != "" && icon2.Name == icon.Name {
-				return nil, errors.Errorf("icon #%d's name and icon #%d's name are same", i, j)
+				return nil, fmt.Errorf("icon #%d's name and icon #%d's name are same", i, j)
 			}
 		}
 	}
