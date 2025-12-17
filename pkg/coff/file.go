@@ -3,12 +3,13 @@
 package coff
 
 import (
+	"debug/pe"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
 
-	"github.com/hallazzang/syso/pkg/common"
+	"github.com/bitfocus/syso/pkg/common"
 )
 
 // common errors
@@ -29,6 +30,8 @@ type rawFileHeader struct {
 
 // File is a COFF file.
 type File struct {
+	arch            string
+	machineType     uint16
 	sections        []*section
 	symbolsOffset   uint32
 	strings         []*_string
@@ -36,11 +39,44 @@ type File struct {
 	stringTableSize uint32
 }
 
+// Borrowed from akavel/rsrc
+const (
+	_IMAGE_REL_AMD64_ADDR32NB = 0x03
+	_IMAGE_REL_I386_DIR32NB   = 0x07
+	_IMAGE_REL_ARM64_ADDR32NB = 0x02
+	_IMAGE_REL_ARM_ADDR32NB   = 0x02
+)
+
 // New returns newly created COFF file.
 func New() *File {
 	return &File{
 		stringTable: make(map[string]*_string),
+		arch:        "amd64",
+		machineType: _IMAGE_REL_I386_DIR32NB,
 	}
+}
+
+func (f *File) Arch() string {
+	return f.arch
+}
+
+func (f *File) SetArch(architechture string) error {
+	if architechture == "amd64" {
+		f.arch = "amd64"
+		f.machineType = _IMAGE_REL_AMD64_ADDR32NB
+	} else if architechture == "arm64" {
+		f.arch = "arm64"
+		f.machineType = _IMAGE_REL_ARM64_ADDR32NB
+	} else if architechture == "i386" {
+		f.arch = "i386"
+		f.machineType = _IMAGE_REL_I386_DIR32NB
+	} else if architechture == "arm" {
+		f.arch = "arm"
+		f.machineType = _IMAGE_REL_ARM_ADDR32NB
+	} else {
+		return fmt.Errorf("invalid architechture")
+	}
+	return nil
 }
 
 // AddSection adds section s to file.
@@ -103,12 +139,21 @@ func (f *File) WriteTo(w io.Writer) (int64, error) {
 
 	f.freeze()
 
+	var fileMachine uint16 = pe.IMAGE_FILE_MACHINE_AMD64
+	if f.arch == "i386" {
+		fileMachine = pe.IMAGE_FILE_MACHINE_I386
+	} else if f.arch == "arm64" {
+		fileMachine = pe.IMAGE_FILE_MACHINE_ARM64
+	} else if f.arch == "arm" {
+		fileMachine = pe.IMAGE_FILE_MACHINE_ARM
+	}
 	n, err := common.BinaryWriteTo(w, &rawFileHeader{
-		Machine:              0x14c, // IMAGE_FILE_MACHINE_I386
+		Machine:              fileMachine, //0x14c, // IMAGE_FILE_MACHINE_I386
 		NumberOfSections:     uint16(len(f.sections)),
 		PointerToSymbolTable: f.symbolsOffset,
 		NumberOfSymbols:      uint32(len(f.sections)),
-		Characteristics:      0x0100, // IMAGE_FILE_32BIT_MACHINE
+		// https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#characteristics
+		Characteristics: pe.IMAGE_FILE_32BIT_MACHINE, // | pe.IMAGE_FILE_EXECUTABLE_IMAGE <-- deprecated
 	})
 	if err != nil {
 		return written, err
@@ -149,7 +194,7 @@ func (f *File) WriteTo(w io.Writer) (int64, error) {
 			n, err := common.BinaryWriteTo(w, &rawRelocation{
 				VirtualAddress:   r.VirtualAddress(),
 				SymbolTableIndex: uint32(i),
-				Type:             0x0007, // IMAGE_REL_I386_DIR32NB
+				Type:             f.machineType, // IMAGE_REL_I386_DIR32NB, etc..
 			})
 			if err != nil {
 				return written, err

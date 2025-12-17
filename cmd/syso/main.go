@@ -4,28 +4,33 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
-	"github.com/hallazzang/syso"
-	"github.com/hallazzang/syso/pkg/coff"
+	"github.com/bitfocus/syso"
+	"github.com/bitfocus/syso/pkg/coff"
 )
 
 var (
 	configFile string
 	outFile    string
+	arch       string
 )
 
 func printErrorAndExit(format string, arg ...interface{}) {
-	fmt.Fprintf(os.Stderr, fmt.Sprintf(format, arg...))
+	fmt.Fprintf(os.Stderr, format, arg...)
 	os.Exit(1)
 }
 
 func init() {
+	flag.StringVar(&arch, "arch", "amd64", "architecture (amd64, i386, arm, arm64)")
 	flag.StringVar(&configFile, "c", "syso.json", "config file name")
-	flag.StringVar(&outFile, "o", "out.syso", "output file name")
+	flag.StringVar(&outFile, "o", "out_[arch].syso", "output file name")
 	flag.Parse()
 }
 
 func main() {
+	outFile = strings.Replace(outFile, "[arch]", arch, -1)
+
 	fcfg, err := os.Open(configFile)
 	if err != nil {
 		printErrorAndExit("failed to open config file: %v\n", err)
@@ -38,6 +43,11 @@ func main() {
 	}
 
 	c := coff.New()
+
+	err = c.SetArch(arch)
+	if err != nil {
+		printErrorAndExit("failed to set architecture: %v\n", err)
+	}
 
 	for i, icon := range cfg.Icons {
 		if err := syso.EmbedIcon(c, icon); err != nil {
