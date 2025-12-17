@@ -207,7 +207,7 @@ func (s *Section) WriteTo(w io.Writer) (int64, error) {
 				DataEntryOffsetOrSubdirectoryOffset: o,
 			})
 			if err != nil {
-				return errors.Wrapf(err, "failed to write resource directory entry #%d", i)
+				return fmt.Errorf("failed to write resource directory entry #%d: %w", i, err)
 			}
 			written += n
 		}
@@ -222,12 +222,12 @@ func (s *Section) WriteTo(w io.Writer) (int64, error) {
 			u := utf16.Encode([]rune(str.string))
 			n, err := common.BinaryWriteTo(w, uint16(len(u)))
 			if err != nil {
-				return errors.Wrapf(err, "failed to write resource string(%q)'s length(%d)", str.string, len(u))
+				return fmt.Errorf("failed to write resource string(%q)'s length(%d): %w", str.string, len(u), err)
 			}
 			written += n
 			n, err = common.BinaryWriteTo(w, u)
 			if err != nil {
-				return errors.Wrapf(err, "failed to write resource string(%q)", str.string)
+				return fmt.Errorf("failed to write resource string(%q): %w", str.string, err)
 			}
 			written += n
 		}
@@ -243,7 +243,7 @@ func (s *Section) WriteTo(w io.Writer) (int64, error) {
 				Size:    uint32(e.data.Size()),
 			})
 			if err != nil {
-				return errors.Wrapf(err, "failed to write resource data entry #%d", i)
+				return fmt.Errorf("failed to write resource data entry #%d: %w", i, err)
 			}
 			written += n
 		}
@@ -256,7 +256,7 @@ func (s *Section) WriteTo(w io.Writer) (int64, error) {
 		for i, d := range dir.datas() {
 			n, err := io.CopyN(w, d, d.Size())
 			if err != nil {
-				return errors.Wrapf(err, "failed to write resource data #%d", i)
+				return fmt.Errorf("failed to write resource data #%d: %w", i, err)
 			}
 			written += n
 		}

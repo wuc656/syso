@@ -47,7 +47,7 @@ func ParseVersionString(s string) (uint64, error) {
 	for _, c := range r[1:] {
 		n, err := strconv.ParseUint(c, 10, 16)
 		if err != nil {
-			return 0, errors.Wrapf(err, "failed to parse version component; %q", c)
+			return 0, fmt.Errorf("failed to parse version component; %q: %w", c, err)
 		}
 		v = (v << 16) | n
 	}

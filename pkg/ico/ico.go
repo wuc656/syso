@@ -63,7 +63,7 @@ func (g *Group) Read(p []byte) (int, error) {
 			ID:         uint16(g.Images[i].ID),
 		})
 		if err != nil {
-			return written, errors.Wrapf(err, "failed to write icon group directory entry #%d", i)
+			return written, fmt.Errorf("failed to write icon group directory entry #%d: %w", i, err)
 		}
 		written += int(n)
 	}
@@ -91,12 +91,12 @@ func DecodeAll(r Reader) (*Group, error) {
 	for i := uint16(0); i < d.Count; i++ {
 		var e directoryEntry
 		if err := binary.Read(r, binary.LittleEndian, &e); err != nil {
-			return nil, errors.Wrapf(err, "failed to read icon directory entry #%d", i)
+			return nil, fmt.Errorf("failed to read icon directory entry #%d: %w", i, err)
 		}
 		entries = append(entries, &e)
 		data, err := io.ReadAll(io.NewSectionReader(r, int64(e.ImageOffset), int64(e.BytesInRes)))
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to read icon image #%d's data", i)
+			return nil, fmt.Errorf("failed to read icon image #%d's data: %w", i, err)
 		}
 		images = append(images, &Image{
 			data: data,

@@ -51,7 +51,7 @@ func ParseConfig(r io.Reader) (*Config, error) {
 	}
 	for i, icon := range c.Icons {
 		if err := icon.Validate(); err != nil {
-			return nil, errors.Wrapf(err, "failed to validate icon #%d", i)
+			return nil, fmt.Errorf("failed to validate icon #%d: %w", i, err)
 		}
 		for j, icon2 := range c.Icons[:i] {
 			if icon.ID != 0 && icon2.ID != 0 && icon2.ID == icon.ID {
@@ -91,7 +91,7 @@ func EmbedIcon(c *coff.File, icon *FileResource) error {
 	for i, img := range icons.Images {
 		img.ID = findPossibleID(r, 1)
 		if err := r.AddResourceByID(rsrc.IconResource, img.ID, img); err != nil {
-			return errors.Wrapf(err, "failed to add icon image #%d", i)
+			return fmt.Errorf("failed to add icon image #%d: %w", i, err)
 		}
 	}
 	if icon.ID != 0 {
