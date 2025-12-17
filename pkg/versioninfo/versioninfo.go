@@ -7,7 +7,6 @@ import (
 	"unicode/utf16"
 
 	"github.com/wuc656/syso/pkg/common"
-	"github.com/pkg/errors"
 )
 
 // VersionInfo is a root structure for a version info resource.
@@ -137,7 +136,7 @@ func (vi *VersionInfo) SetFileVersion(v uint64) {
 func (vi *VersionInfo) SetFileVersionString(s string) error {
 	v, err := common.ParseVersionString(s)
 	if err != nil {
-		return errors.Wrap(err, "failed to parse version string")
+		return fmt.Errorf("failed to parse version string: %w", err)
 	}
 	vi.fixedFileInfo.fileVersion = v
 	return nil
@@ -164,7 +163,7 @@ func (vi *VersionInfo) SetProductVersion(v uint64) {
 func (vi *VersionInfo) SetProductVersionString(s string) error {
 	v, err := common.ParseVersionString(s)
 	if err != nil {
-		return errors.Wrap(err, "failed to parse version string")
+		return fmt.Errorf("failed to parse version string: %w", err)
 	}
 	vi.fixedFileInfo.productVersion = v
 	return nil

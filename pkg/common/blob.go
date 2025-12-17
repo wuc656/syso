@@ -1,9 +1,8 @@
 package common
 
 import (
+	"fmt"
 	"io"
-
-	"github.com/pkg/errors"
 )
 
 // Blob represents arbitrary data that can be embedded in an object file.
@@ -21,7 +20,7 @@ type dataBlob struct {
 func NewBlob(r io.Reader) (Blob, error) {
 	b, err := io.ReadAll(r)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to read data")
+		return nil, fmt.Errorf("failed to read data: %w", err)
 	}
 	return &dataBlob{
 		data: b,

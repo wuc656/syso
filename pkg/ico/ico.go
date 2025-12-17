@@ -45,7 +45,7 @@ func (g *Group) Read(p []byte) (int, error) {
 		Count: uint16(len(g.entries)),
 	})
 	if err != nil {
-		return written, errors.Wrap(err, "failed to write icon group directory")
+		return written, fmt.Errorf("failed to write icon group directory: %w", err)
 	}
 	written += int(n)
 	for i, e := range g.entries {
@@ -80,7 +80,7 @@ func (g *Group) Size() int64 {
 func DecodeAll(r Reader) (*Group, error) {
 	var d directory
 	if err := binary.Read(r, binary.LittleEndian, &d); err != nil {
-		return nil, errors.Wrap(err, "failed to read icon directory")
+		return nil, fmt.Errorf("failed to read icon directory: %w", err)
 	}
 	if d.Reserved != 0 || d.Type != 1 || d.Count == 0 {
 		return nil, errors.New("bad ICO file")

@@ -67,12 +67,12 @@ type VersionInfoFixed struct {
 func (f *VersionInfoFixed) Validate() error {
 	if f.FileVersion != nil {
 		if _, err := common.ParseVersionString(*f.FileVersion); err != nil {
-			return errors.Wrap(err, "failed to parse file version string")
+			return fmt.Errorf("failed to parse file version string: %w", err)
 		}
 	}
 	if f.ProductVersion != nil {
 		if _, err := common.ParseVersionString(*f.ProductVersion); err != nil {
-			return errors.Wrap(err, "failed to parse product version string")
+			return fmt.Errorf("failed to parse product version string: %w", err)
 		}
 	}
 	return nil
@@ -91,10 +91,10 @@ type VersionInfoStringTable struct {
 // Validate returns data validation result.
 func (st *VersionInfoStringTable) Validate() error {
 	if _, err := st.languageID(); err != nil {
-		return errors.Wrap(err, "failed to parse language identifier")
+		return fmt.Errorf("failed to parse language identifier: %w", err)
 	}
 	if _, err := st.charsetID(); err != nil {
-		return errors.Wrap(err, "failed to parse charset identifier")
+		return fmt.Errorf("failed to parse charset identifier: %w", err)
 	}
 	if st.Strings == nil {
 		return errors.New("strings should present")
@@ -150,10 +150,10 @@ type VersionInfoTranslation struct {
 // Validate returns data validation result.
 func (t *VersionInfoTranslation) Validate() error {
 	if _, err := t.languageID(); err != nil {
-		return errors.Wrap(err, "failed to parse language identifier")
+		return fmt.Errorf("failed to parse language identifier: %w", err)
 	}
 	if _, err := t.charsetID(); err != nil {
-		return errors.Wrap(err, "failed to parse charset identifier")
+		return fmt.Errorf("failed to parse charset identifier: %w", err)
 	}
 
 	return nil
@@ -176,12 +176,12 @@ func (t *VersionInfoTranslation) charsetID() (uint16, error) {
 // EmbedVersionInfo embeds a version info resource.
 func EmbedVersionInfo(c *coff.File, v *VersionInfoResource) error {
 	if err := v.Validate(); err != nil {
-		return errors.Wrap(err, "invalid version info")
+		return fmt.Errorf("invalid version info: %w", err)
 	}
 
 	r, err := getOrCreateRSRCSection(c)
 	if err != nil {
-		return errors.Wrap(err, "failed to get or create .rsrc section")
+		return fmt.Errorf("failed to get or create .rsrc section: %w", err)
 	}
 
 	vi := versioninfo.New()
@@ -189,12 +189,12 @@ func EmbedVersionInfo(c *coff.File, v *VersionInfoResource) error {
 	if v.Fixed != nil {
 		if v.Fixed.FileVersion != nil {
 			if err := vi.SetFileVersionString(*v.Fixed.FileVersion); err != nil {
-				return errors.Wrap(err, "failed to set file version")
+				return fmt.Errorf("failed to set file version: %w", err)
 			}
 		}
 		if v.Fixed.ProductVersion != nil {
 			if err := vi.SetProductVersionString(*v.Fixed.ProductVersion); err != nil {
-				return errors.Wrap(err, "failed to set product version")
+				return fmt.Errorf("failed to set product version: %w", err)
 			}
 		}
 	}
@@ -216,12 +216,12 @@ func EmbedVersionInfo(c *coff.File, v *VersionInfoResource) error {
 	// TODO: need more efficient way
 	buf := &bytes.Buffer{}
 	if _, err := vi.WriteTo(buf); err != nil {
-		return errors.Wrap(err, "failed to write version info data")
+		return fmt.Errorf("failed to write version info data: %w", err)
 	}
 
 	b, err := common.NewBlob(bytes.NewReader(buf.Bytes()))
 	if err != nil {
-		return errors.Wrap(err, "failed to create version info blob")
+		return fmt.Errorf("failed to create version info blob: %w", err)
 	}
 
 	if v.ID != nil {
@@ -230,7 +230,7 @@ func EmbedVersionInfo(c *coff.File, v *VersionInfoResource) error {
 		err = r.AddResourceByName(rsrc.VersionInfoResource, *v.Name, b)
 	}
 	if err != nil {
-		return errors.Wrap(err, "failed to add version info resource")
+		return fmt.Errorf("failed to add version info resource: %w", err)
 	}
 
 	return nil

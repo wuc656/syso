@@ -47,7 +47,7 @@ type Config struct {
 func ParseConfig(r io.Reader) (*Config, error) {
 	var c Config
 	if err := json.NewDecoder(r).Decode(&c); err != nil {
-		return nil, errors.Wrap(err, "failed to decode JSON")
+		return nil, fmt.Errorf("failed to decode JSON: %w", err)
 	}
 	for i, icon := range c.Icons {
 		if err := icon.Validate(); err != nil {
@@ -63,7 +63,7 @@ func ParseConfig(r io.Reader) (*Config, error) {
 	}
 	if c.Manifest != nil {
 		if err := c.Manifest.Validate(); err != nil {
-			return nil, errors.Wrap(err, "failed to validate manifest")
+			return nil, fmt.Errorf("failed to validate manifest: %w", err)
 		}
 	}
 	// TODO: validate version info resource
@@ -73,20 +73,20 @@ func ParseConfig(r io.Reader) (*Config, error) {
 // EmbedIcon embeds an icon into c.
 func EmbedIcon(c *coff.File, icon *FileResource) error {
 	if err := icon.Validate(); err != nil {
-		return errors.Wrap(err, "invalid icon")
+		return fmt.Errorf("invalid icon: %w", err)
 	}
 	r, err := getOrCreateRSRCSection(c)
 	if err != nil {
-		return errors.Wrap(err, "failed to get or create .rsrc section")
+		return fmt.Errorf("failed to get or create .rsrc section: %w", err)
 	}
 	f, err := os.Open(icon.Path)
 	if err != nil {
-		return errors.Wrap(err, "failed to open icon file")
+		return fmt.Errorf("failed to open icon file: %w", err)
 	}
 	defer f.Close()
 	icons, err := ico.DecodeAll(f)
 	if err != nil {
-		return errors.Wrap(err, "failed to decode icon file")
+		return fmt.Errorf("failed to decode icon file: %w", err)
 	}
 	for i, img := range icons.Images {
 		img.ID = findPossibleID(r, 1)
@@ -100,7 +100,7 @@ func EmbedIcon(c *coff.File, icon *FileResource) error {
 		err = r.AddResourceByName(rsrc.IconGroupResource, icon.Name, icons)
 	}
 	if err != nil {
-		return errors.Wrap(err, "failed to add icon group resource")
+		return fmt.Errorf("failed to add icon group resource: %w", err)
 	}
 	return nil
 }
@@ -108,15 +108,15 @@ func EmbedIcon(c *coff.File, icon *FileResource) error {
 // EmbedManifest embeds a manifest into c.
 func EmbedManifest(c *coff.File, manifest *FileResource) error {
 	if err := manifest.Validate(); err != nil {
-		return errors.Wrap(err, "invalid manifest")
+		return fmt.Errorf("invalid manifest: %w", err)
 	}
 	r, err := getOrCreateRSRCSection(c)
 	if err != nil {
-		return errors.Wrap(err, "failed to get or create .rsrc section")
+		return fmt.Errorf("failed to get or create .rsrc section: %w", err)
 	}
 	f, err := os.Open(manifest.Path)
 	if err != nil {
-		return errors.Wrap(err, "failed to open manifest file")
+		return fmt.Errorf("failed to open manifest file: %w", err)
 	}
 	defer f.Close()
 	b, err := common.NewBlob(f)
@@ -129,7 +129,7 @@ func EmbedManifest(c *coff.File, manifest *FileResource) error {
 		err = r.AddResourceByName(rsrc.ManifestResource, manifest.Name, b)
 	}
 	if err != nil {
-		return errors.Wrap(err, "failed to add manifest resource")
+		return fmt.Errorf("failed to add manifest resource: %w", err)
 	}
 	return nil
 }
@@ -143,7 +143,7 @@ func getOrCreateRSRCSection(c *coff.File) (*rsrc.Section, error) {
 				return nil, errors.New("failed to add new .rsrc section")
 			}
 		} else {
-			return nil, errors.Wrap(err, "failed to get .rsrc section")
+			return nil, fmt.Errorf("failed to get .rsrc section: %w", err)
 		}
 	}
 	r, ok := s.(*rsrc.Section)

@@ -2,12 +2,13 @@ package rsrc
 
 import (
 	"encoding/binary"
+	"fmt"
 	"io"
 	"unicode/utf16"
 
+	"github.com/pkg/errors"
 	"github.com/wuc656/syso/pkg/coff"
 	"github.com/wuc656/syso/pkg/common"
-	"github.com/pkg/errors"
 )
 
 // Section represents the .rsrc section in PE file.
@@ -100,7 +101,7 @@ func (s *Section) addResource(typ int, id *int, name *string, blob common.Blob) 
 	if subdir == nil {
 		subdir, err = s.rootDir.addSubdirectory(nil, &typ, 0)
 		if err != nil {
-			return nil, errors.Wrap(err, "failed to add `id` level resource directory")
+			return nil, fmt.Errorf("failed to add `id` level resource directory: %w", err)
 		}
 	}
 
@@ -110,13 +111,13 @@ func (s *Section) addResource(typ int, id *int, name *string, blob common.Blob) 
 		subdir, err = subdir.addSubdirectory(name, nil, 0)
 	}
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to add `language` level subdirectory")
+		return nil, fmt.Errorf("failed to add `language` level subdirectory: %w", err)
 	}
 
 	lang := enUSLanguage
 	d, err := subdir.addData(nil, &lang, blob)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to add resource data")
+		return nil, fmt.Errorf("failed to add resource data: %w", err)
 	}
 
 	return d, nil
@@ -184,7 +185,7 @@ func (s *Section) WriteTo(w io.Writer) (int64, error) {
 			NumberOfIDEntries:   uint16(len(dir.idEntries)),
 		})
 		if err != nil {
-			return errors.Wrap(err, "failed to write resource directory")
+			return fmt.Errorf("failed to write resource directory: %w", err)
 		}
 		written += n
 
