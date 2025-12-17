@@ -12,9 +12,9 @@ Table of contents:
 - [Usage](#Usage)
 - [License](#License)
 
-## Forked from hallazzang/syso
+## Pull requests from bitfocus/syso
 
-This project is forked from [hallazzang/syso](https://github.com/hallazzang/syso) to support `go install xxxx` for installation of cli, as go get is deprecated.
+This project is Pull requests from [bitfocus/syso](https://github.com/hallazzang/syso) to support `go install xxxx` for installation of cli, as go get is deprecated.
 
 ## Features
 
