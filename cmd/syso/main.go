@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/bitfocus/syso"
-	"github.com/bitfocus/syso/pkg/coff"
+	"github.com/wuc656/syso"
+	"github.com/wuc656/syso/pkg/coff"
 )
 
 var (

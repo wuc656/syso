@@ -1,7 +1,7 @@
 # syso
 
-[![godoc]](https://godoc.org/github.com/bitfocus/syso)
-[![goreportcard]](https://goreportcard.com/report/github.com/bitfocus/syso)
+[![godoc]](https://godoc.org/github.com/wuc656/syso)
+[![goreportcard]](https://goreportcard.com/report/github.com/wuc656/syso)
 
 **syso** - tool for embedding various type of resources in go Windows executable
 
@@ -35,7 +35,7 @@ Other tools do not guarantee your resource to have same id across builds.
 ## Installation
 
 ```
-$ go install github.com/bitfocus/syso/cmd/syso@latest
+$ go install github.com/wuc656/syso/cmd/syso@latest
 ```
 
 ## Usage
@@ -210,7 +210,7 @@ You can use both `"companyName"` and `"CompanyName"`, or even `"companyname"` fo
 
 MIT
 
-[godoc]: https://godoc.org/github.com/bitfocus/syso?status.svg
-[goreportcard]: https://goreportcard.com/badge/github.com/bitfocus/syso
+[godoc]: https://godoc.org/github.com/wuc656/syso?status.svg
+[goreportcard]: https://goreportcard.com/badge/github.com/wuc656/syso
 [rsrc]: https://github.com/akavel/rsrc
 [goversioninfo]: https://github.com/josephspurrier/goversioninfo

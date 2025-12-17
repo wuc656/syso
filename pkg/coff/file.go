@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/bitfocus/syso/pkg/common"
+	"github.com/wuc656/syso/pkg/common"
 )
 
 // common errors

@@ -1,4 +1,4 @@
-module github.com/bitfocus/syso
+module github.com/wuc656/syso
 
 go 1.23.0
 

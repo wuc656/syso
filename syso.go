@@ -5,10 +5,10 @@ import (
 	"io"
 	"os"
 
-	"github.com/bitfocus/syso/pkg/coff"
-	"github.com/bitfocus/syso/pkg/common"
-	"github.com/bitfocus/syso/pkg/ico"
-	"github.com/bitfocus/syso/pkg/rsrc"
+	"github.com/wuc656/syso/pkg/coff"
+	"github.com/wuc656/syso/pkg/common"
+	"github.com/wuc656/syso/pkg/ico"
+	"github.com/wuc656/syso/pkg/rsrc"
 	"github.com/pkg/errors"
 )
 

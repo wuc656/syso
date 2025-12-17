@@ -5,10 +5,10 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/bitfocus/syso/pkg/coff"
-	"github.com/bitfocus/syso/pkg/common"
-	"github.com/bitfocus/syso/pkg/rsrc"
-	"github.com/bitfocus/syso/pkg/versioninfo"
+	"github.com/wuc656/syso/pkg/coff"
+	"github.com/wuc656/syso/pkg/common"
+	"github.com/wuc656/syso/pkg/rsrc"
+	"github.com/wuc656/syso/pkg/versioninfo"
 	"github.com/pkg/errors"
 )
 

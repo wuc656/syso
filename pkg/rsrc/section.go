@@ -5,8 +5,8 @@ import (
 	"io"
 	"unicode/utf16"
 
-	"github.com/bitfocus/syso/pkg/coff"
-	"github.com/bitfocus/syso/pkg/common"
+	"github.com/wuc656/syso/pkg/coff"
+	"github.com/wuc656/syso/pkg/common"
 	"github.com/pkg/errors"
 )
 

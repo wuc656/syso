@@ -3,7 +3,7 @@ package rsrc
 import (
 	"sort"
 
-	"github.com/bitfocus/syso/pkg/common"
+	"github.com/wuc656/syso/pkg/common"
 	"github.com/pkg/errors"
 )
 

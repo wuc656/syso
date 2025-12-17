@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/bitfocus/syso/pkg/ico"
+	"github.com/wuc656/syso/pkg/ico"
 )
 
 func TestAddIconByName(t *testing.T) {
