@@ -5,8 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/pkg/errors"
+	"errors"
 )
 
 type badReader struct {

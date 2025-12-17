@@ -2,9 +2,9 @@ package rsrc
 
 import (
 	"sort"
+	"errors"
 
 	"github.com/wuc656/syso/pkg/common"
-	"github.com/pkg/errors"
 )
 
 type rawDirectory struct {

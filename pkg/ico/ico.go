@@ -5,8 +5,8 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"errors"
 
-	"github.com/pkg/errors"
 	"github.com/wuc656/syso/pkg/common"
 )
 

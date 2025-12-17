@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"errors"
 
-	"github.com/pkg/errors"
 	"github.com/wuc656/syso/pkg/coff"
 	"github.com/wuc656/syso/pkg/common"
 	"github.com/wuc656/syso/pkg/rsrc"

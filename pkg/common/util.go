@@ -6,8 +6,7 @@ import (
 	"io"
 	"regexp"
 	"strconv"
-
-	"github.com/pkg/errors"
+	"errors"
 )
 
 // BinaryWriteTo writes v to w in little endian format.

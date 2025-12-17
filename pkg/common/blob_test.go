@@ -4,8 +4,7 @@ import (
 	"bytes"
 	"io"
 	"testing"
-
-	"github.com/pkg/errors"
+	"errors"
 )
 
 type badReader struct{}
