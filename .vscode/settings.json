@@ -1,0 +1,19 @@
+{
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "gopls": {
+        "analyses": {
+            "modernize": true,
+            "ST1000": false,
+            "ST1003": false,
+            "ST1020": false,
+            "ST1021": false,
+            "U1000": false
+        },
+        "staticcheck": true
+    },
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always"
+    }
+}

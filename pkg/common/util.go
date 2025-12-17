@@ -11,7 +11,7 @@ import (
 )
 
 // BinaryWriteTo writes v to w in little endian format.
-func BinaryWriteTo(w io.Writer, v interface{}) (int64, error) {
+func BinaryWriteTo(w io.Writer, v any) (int64, error) {
 	if err := binary.Write(w, binary.LittleEndian, v); err != nil {
 		return 0, err
 	}

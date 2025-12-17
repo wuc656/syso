@@ -6,7 +6,7 @@ import (
 
 func TestIdentifier(t *testing.T) {
 	for _, tc := range []struct {
-		inp        interface{}
+		inp        any
 		isID       bool
 		id         int
 		name       string

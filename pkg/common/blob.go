@@ -2,7 +2,6 @@ package common
 
 import (
 	"io"
-	"io/ioutil"
 
 	"github.com/pkg/errors"
 )
@@ -20,7 +19,7 @@ type dataBlob struct {
 
 // NewBlob creates a blob from r by reading all data from it.
 func NewBlob(r io.Reader) (Blob, error) {
-	b, err := ioutil.ReadAll(r)
+	b, err := io.ReadAll(r)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to read data")
 	}

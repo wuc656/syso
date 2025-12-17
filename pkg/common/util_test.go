@@ -16,7 +16,7 @@ func (*badWriter) Write([]byte) (int, error) {
 
 func TestBinaryWriteTo(t *testing.T) {
 	for _, tc := range []struct {
-		Value  interface{}
+		Value  any
 		Length int
 		Result []byte
 	}{
@@ -38,7 +38,7 @@ func TestBinaryWriteTo(t *testing.T) {
 }
 
 func TestBinaryWriteTo_invalidValue(t *testing.T) {
-	for _, tc := range []interface{}{
+	for _, tc := range []any{
 		0,
 		"hello",
 		struct{ Value int }{1},

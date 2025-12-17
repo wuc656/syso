@@ -10,13 +10,16 @@ import (
 	"github.com/wuc656/syso/pkg/coff"
 )
 
+const version = "v0.0.3"
+
 var (
 	configFile string
 	outFile    string
 	arch       string
+	showVersion bool
 )
 
-func printErrorAndExit(format string, arg ...interface{}) {
+func printErrorAndExit(format string, arg ...any) {
 	fmt.Fprintf(os.Stderr, format, arg...)
 	os.Exit(1)
 }
@@ -25,11 +28,17 @@ func init() {
 	flag.StringVar(&arch, "arch", "amd64", "architecture (amd64, i386, arm, arm64)")
 	flag.StringVar(&configFile, "c", "syso.json", "config file name")
 	flag.StringVar(&outFile, "o", "out_[arch].syso", "output file name")
+	flag.BoolVar(&showVersion, "v", false, "show version and exit")
 	flag.Parse()
 }
 
 func main() {
-	outFile = strings.Replace(outFile, "[arch]", arch, -1)
+	if showVersion {
+		fmt.Println("syso version", version)
+		os.Exit(0)
+	}
+
+	outFile = strings.ReplaceAll(outFile, "[arch]", arch, )
 
 	fcfg, err := os.Open(configFile)
 	if err != nil {

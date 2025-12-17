@@ -6,10 +6,10 @@ type rawRelocation struct {
 	Type             uint16
 }
 
-type relocation struct {
+/* type relocation struct {
 	offset uint32
 	Relocation
-}
+} */
 
 // Relocation is a COFF relocation.
 type Relocation interface {

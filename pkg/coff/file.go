@@ -61,19 +61,20 @@ func (f *File) Arch() string {
 }
 
 func (f *File) SetArch(architechture string) error {
-	if architechture == "amd64" {
+	switch architechture {
+	case "amd64":
 		f.arch = "amd64"
 		f.machineType = _IMAGE_REL_AMD64_ADDR32NB
-	} else if architechture == "arm64" {
+	case "arm64":
 		f.arch = "arm64"
 		f.machineType = _IMAGE_REL_ARM64_ADDR32NB
-	} else if architechture == "i386" {
+	case "i386":
 		f.arch = "i386"
 		f.machineType = _IMAGE_REL_I386_DIR32NB
-	} else if architechture == "arm" {
+	case "arm":
 		f.arch = "arm"
 		f.machineType = _IMAGE_REL_ARM_ADDR32NB
-	} else {
+	default:
 		return fmt.Errorf("invalid architechture")
 	}
 	return nil
@@ -140,11 +141,12 @@ func (f *File) WriteTo(w io.Writer) (int64, error) {
 	f.freeze()
 
 	var fileMachine uint16 = pe.IMAGE_FILE_MACHINE_AMD64
-	if f.arch == "i386" {
+	switch f.arch {
+	case "i386":
 		fileMachine = pe.IMAGE_FILE_MACHINE_I386
-	} else if f.arch == "arm64" {
+	case "arm64":
 		fileMachine = pe.IMAGE_FILE_MACHINE_ARM64
-	} else if f.arch == "arm" {
+	case "arm":
 		fileMachine = pe.IMAGE_FILE_MACHINE_ARM
 	}
 	n, err := common.BinaryWriteTo(w, &rawFileHeader{

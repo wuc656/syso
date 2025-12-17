@@ -2,7 +2,7 @@ package rsrc
 
 import "github.com/pkg/errors"
 
-func identifier(i interface{}) (*int, *string, error) {
+func identifier(i any) (*int, *string, error) {
 	if id, ok := i.(int); ok {
 		return &id, nil, nil
 	} else if name, ok := i.(string); ok {

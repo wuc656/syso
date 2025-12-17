@@ -27,7 +27,7 @@ type rawVersionInfo struct {
 	Padding     [2]byte
 	Value       rawFixedFileInfo
 	// Padding2    []uint16
-	// Children    []interface{}
+	// Children    []any
 }
 
 // New returns new version info resource with some fields set to default.
