@@ -35,7 +35,7 @@ Other tools do not guarantee your resource to have same id across builds.
 ## Installation
 
 ```
-$ go install github.com/wuc656/syso/cmd/syso@latest
+go install github.com/wuc656/syso/cmd/syso@latest
 ```
 
 ## Usage
